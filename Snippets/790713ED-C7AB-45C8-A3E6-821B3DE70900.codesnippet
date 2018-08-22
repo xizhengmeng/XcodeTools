@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDECodeSnippetCompletionPrefix</key>
+	<string>ctableView</string>
+	<key>IDECodeSnippetCompletionScopes</key>
+	<array>
+		<string>All</string>
+	</array>
+	<key>IDECodeSnippetContents</key>
+	<string>#import "ViewController.h"
+
+#define CELL @"cell"
+
+@interface ViewController ()&lt;UITableViewDelegate, UITableViewDataSource&gt;
+@property (nonatomic, strong) UITableView *tableView;
+@end
+
+@implementation ViewController
+
+- (UITableView *)tableView {
+    if (_tableView == nil) {
+        _tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
+        _tableView.delegate  = self;
+        _tableView.dataSource = self;
+        _tableView.estimatedRowHeight = 50;
+        [_tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:CELL];
+    }
+    return _tableView;
+}
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    
+    [self.view addSubview:self.tableView];
+    
+    //将cell的隔断线缺少的部分空缺补上，配合willDisplayCell中的代码
+    if ([self.tableView respondsToSelector:@selector(setSeparatorInset:)]) {
+        
+        [self.tableView setSeparatorInset:UIEdgeInsetsZero];
+        
+    }
+    
+    if ([self.tableView respondsToSelector:@selector(setLayoutMargins:)]) {
+        
+        [self.tableView setLayoutMargins:UIEdgeInsetsZero];
+        
+    }
+    
+}
+
+#pragma mark - datasource
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    return 1;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    return 10;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return 50;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    UITableViewCell *cell;
+    cell = [tableView dequeueReusableCellWithIdentifier:CELL];
+    //code
+    return cell;
+}
+
+#pragma mark - delegate
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+}
+
+- (void)tableView:(UITableView *)tableView willDisplayCell:(nonnull UITableViewCell *)cell forRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
+    if ([cell respondsToSelector:@selector(setSeparatorInset:)]) {
+        
+        [cell setSeparatorInset:UIEdgeInsetsZero];
+        
+    }
+    
+    if ([cell respondsToSelector:@selector(setLayoutMargins:)]) {
+        
+        [cell setLayoutMargins:UIEdgeInsetsZero];
+        
+    }
+    
+    cell.contentView.backgroundColor = [UIColor blueColor];
+}
+
+@end</string>
+	<key>IDECodeSnippetIdentifier</key>
+	<string>790713ED-C7AB-45C8-A3E6-821B3DE70900</string>
+	<key>IDECodeSnippetLanguage</key>
+	<string>Xcode.SourceCodeLanguage.Objective-C</string>
+	<key>IDECodeSnippetSummary</key>
+	<string>tableView</string>
+	<key>IDECodeSnippetTitle</key>
+	<string>tableView</string>
+	<key>IDECodeSnippetUserSnippet</key>
+	<true/>
+	<key>IDECodeSnippetVersion</key>
+	<integer>2</integer>
+</dict>
+</plist>

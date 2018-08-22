@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDECodeSnippetCompletionPrefix</key>
+	<string>drawimage</string>
+	<key>IDECodeSnippetCompletionScopes</key>
+	<array>
+		<string>All</string>
+	</array>
+	<key>IDECodeSnippetContents</key>
+	<string> // 开启图形上下文
+UIGraphicsBeginImageContextWithOptions(&lt;#CGSize#&gt;, YES, 0.0);
+
+[image drawInRect:CGRectMake(0, 0, &lt;#CGFloat#&gt;, &lt;#CGFloat#&gt;)];
+        
+        // 获得图片
+        self.imageView.image = UIGraphicsGetImageFromCurrentImageContext();
+        
+        // 结束图形上下文
+        UIGraphicsEndImageContext();</string>
+	<key>IDECodeSnippetIdentifier</key>
+	<string>1A093DDA-31F4-4279-8B42-2C4DAB391AAA</string>
+	<key>IDECodeSnippetLanguage</key>
+	<string>Xcode.SourceCodeLanguage.Objective-C</string>
+	<key>IDECodeSnippetSummary</key>
+	<string>drawimage</string>
+	<key>IDECodeSnippetTitle</key>
+	<string>drawimage</string>
+	<key>IDECodeSnippetUserSnippet</key>
+	<true/>
+	<key>IDECodeSnippetVersion</key>
+	<integer>2</integer>
+</dict>
+</plist>

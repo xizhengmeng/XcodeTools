@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDECodeSnippetCompletionPrefix</key>
+	<string>cColloction</string>
+	<key>IDECodeSnippetCompletionScopes</key>
+	<array>
+		<string>All</string>
+	</array>
+	<key>IDECodeSnippetContents</key>
+	<string>#define kScreenW [UIScreen mainScreen].bounds.size.width
+#define kScreenH [UIScreen mainScreen].bounds.size.height
+
+#define CELL @"cell"
+#define HEADER @"header"
+#define FOOTER @"footer"
+
+@interface &lt;#className#&gt;()&lt;UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout&gt;
+@property (nonatomic, strong) UICollectionView *collectionView;
+
+//缓存数据的通用数据
+@property (nonatomic, strong) NSMutableArray *showArr;
+@property (nonatomic, strong) NSMutableArray *showArr1;
+@property (nonatomic, strong) NSMutableArray *showArr2;
+@property (nonatomic, strong) NSMutableArray *showArr3;
+@property (nonatomic, strong) UIView *backView;
+@property (nonatomic, strong) UIView *headerView;
+@end
+
+@implementation FXViewController
+- (NSMutableArray *)showArr {
+    if (!_showArr) {
+        _showArr = [NSMutableArray array];
+        [_showArr addObject:self.showArr1];
+        [_showArr addObject:self.showArr2];
+        [_showArr addObject:self.showArr3];
+    }
+    return _showArr;
+}
+
+- (NSMutableArray *)showArr1 {
+    if (!_showArr1) {
+        _showArr1 = [NSMutableArray array];
+        NSArray *arr = @[@"1", @"2", @"3", @"4"];
+        [_showArr1 addObjectsFromArray:arr];
+    }
+    return _showArr1;
+}
+
+- (NSMutableArray *)showArr2 {
+    if (!_showArr2) {
+        _showArr2 = [NSMutableArray array];
+        NSArray *arr = @[@"1", @"2", @"3", @"4"];
+        [_showArr2 addObjectsFromArray:arr];
+    }
+    return _showArr2;
+}
+
+- (NSMutableArray *)showArr3 {
+    if (!_showArr3) {
+        _showArr3 = [NSMutableArray array];
+        NSArray *arr = @[@"1", @"2", @"3", @"4"];
+        [_showArr3 addObjectsFromArray:arr];
+    }
+    return _showArr3;
+}
+
+- (UIView *)headerView {
+    if (!_headerView) {
+        _headerView = [[UIView alloc] initWithFrame:CGRectMake(0, -150, kScreenW, 140)];
+        _headerView.backgroundColor = [UIColor orangeColor];
+        UILabel *titleLabel = [[UILabel alloc] init];
+        titleLabel.text = @"我是header";
+        titleLabel.font = [UIFont systemFontOfSize:30];
+        titleLabel.textColor = [UIColor whiteColor];
+        [titleLabel sizeToFit];
+        [_headerView addSubview:titleLabel];
+        titleLabel.center = CGPointMake(_headerView.width * 0.5, _headerView.height * 0.5);
+    }
+    return _headerView;
+}
+- (UIView *)backView {
+    if (!_backView) {
+        _backView = [[UIView alloc] initWithFrame:self.view.bounds];
+        _backView.backgroundColor = [UIColor whiteColor];
+    }
+    return _backView;
+}
+- (UICollectionView *)collectionView {
+    if (!_collectionView) {
+        UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc] init];
+        flowLayout.scrollDirection = UICollectionViewScrollDirectionVertical;//滚动方向
+        
+        flowLayout.itemSize = CGSizeMake(100, 100);//全局配置item的大小，后便可以通过代理分别配置
+        
+        
+        flowLayout.minimumLineSpacing = 2;//决定每行与行之间的间距
+        flowLayout.minimumInteritemSpacing = 20;//决定列与列之间的距离
+        flowLayout.sectionInset = UIEdgeInsetsMake(2, 2, 2, 2);
+        
+        _collectionView = [[UICollectionView alloc] initWithFrame:[UIScreen mainScreen].bounds collectionViewLayout:flowLayout];
+        _collectionView.allowsMultipleSelection = YES;//是否允许多选，在开启多选模式，也就意味着可以一个模块都不选，如果设置为NO，那就意味着如果选中了一个，那么这个将不能被取消
+        _collectionView.alwaysBounceVertical = YES;//纵向滑动到一端的时候是否有弹簧效果
+        _collectionView.alwaysBounceHorizontal = NO;//横向华东到一端的时候是否有弹簧效果
+        
+        _collectionView.contentInset = UIEdgeInsetsMake(150, 0, 0, 0);
+        
+        _collectionView.dataSource = self;
+        _collectionView.delegate = self;
+        
+        [_collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:CELL];
+        
+        [_collectionView registerClass:[UICollectionReusableView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:HEADER];
+        
+        [_collectionView registerClass:[UICollectionReusableView class] forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:FOOTER];
+        _collectionView.backgroundColor = [UIColor whiteColor];
+        
+        [_collectionView addSubview:self.headerView];//因为collectionView没有像tableview那样的header，所以只能添加一个普通的view，然后设置一下
+        
+    }
+    return _collectionView;
+}
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    
+    [self createSubViews];
+}
+
+- (void)createSubViews {
+    [self.view addSubview:self.backView];
+    
+    [self.backView addSubview:self.collectionView];
+}
+
+- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
+    //    [self.collectionView.collectionViewLayout invalidateLayout];//解决number为0闪退的问题
+    return self.showArr.count;
+}
+
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
+    //    [self.collectionView.collectionViewLayout invalidateLayout];//解决number为0闪退的问题
+    NSArray *arr = self.showArr[section];
+    return arr.count;
+}
+
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
+    UICollectionViewCell *cell;
+    //cell的布局分为四层
+    //1.cell 2.backgroundView 3.selectedbackgroudnView 4.contentView
+    //他们的关系是一层在另一层上边，其中，如果一个item被设置为了selected状态，那么selectedbackgroundView只是盖在了backgroundview的上边，但是下边的backgroundview并没有消失，还有如果你设置了contentView，那么后边你也就看不到了
+    cell = [collectionView dequeueReusableCellWithReuseIdentifier:CELL forIndexPath:indexPath];
+    cell.backgroundColor = [UIColor orangeColor];
+    //    cell.contentView.backgroundColor = [UIColor orangeColor];
+    UIImageView *backView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"001"]];
+    backView.contentMode = UIViewContentModeScaleAspectFit;
+    cell.backgroundView = backView;
+    
+    UIImageView *slectedView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"002"]];
+    slectedView.contentMode = UIViewContentModeScaleAspectFit;
+    cell.selectedBackgroundView = slectedView;
+    
+    cell.contentView.backgroundColor = [UIColor redColor];
+    
+    UILabel *title = [[UILabel alloc] init];
+    title.text = [NSString stringWithFormat:@"我是section%ld", indexPath.row];
+    title.textColor = [UIColor whiteColor];
+    [title sizeToFit];
+    title.centerX = cell.contentView.width * 0.5;
+    title.centerY = cell.contentView.height * 0.5;
+    [cell.contentView addSubview:title];
+    
+    //code
+    return cell;
+}
+//定义item的大小
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
+    NSInteger section = indexPath.section;
+    switch (section) {
+        case 0:
+        {
+            return CGSizeMake(kScreenW, 100);
+        }
+            break;
+        case 1:
+        {
+            return CGSizeMake(30, 100);
+        }
+            break;
+        default:
+        {
+            return CGSizeMake(100, 100);
+        }
+            break;
+    }
+    
+}
+//相当于tableview的sectionheader和footer
+- (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
+    
+    UICollectionViewCell *header = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:HEADER forIndexPath:indexPath];
+    header.backgroundColor = [UIColor blueColor];
+    UILabel *title = [[UILabel alloc] init];
+    title.text = [NSString stringWithFormat:@"我是section%ld", indexPath.section];
+    title.textColor = [UIColor whiteColor];
+    [title sizeToFit];
+    title.centerY = header.height * 0.5;
+    [header addSubview:title];
+    
+    //code
+    
+    return header;
+}
+
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section {
+    return CGSizeMake(kScreenW, 40);
+}
+
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForFooterInSection:(NSInteger)section {
+    return CGSizeMake(kScreenW, 0);
+}
+//被选中时候的回调
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+    NSInteger row = indexPath.row;
+    NSLog(@"%ld", row);
+    NSMutableArray *arr = self.showArr[indexPath.section];
+    [arr addObject:@"5"];
+    [self.collectionView insertItemsAtIndexPaths:@[[NSIndexPath indexPathForRow:indexPath.row inSection:indexPath.section]]];
+}
+
+//是否在选中的时候高亮
+- (BOOL)collectionView:(UICollectionView *)collectionView shouldHighlightItemAtIndexPath:(NSIndexPath *)indexPath {
+    return YES;
+}
+
+//这个item是否可以被选择
+- (BOOL)collectionView:(UICollectionView *)collectionView shouldSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+    return YES;
+}
+
+- (BOOL)collectionView:(UICollectionView *)collectionView shouldDeselectItemAtIndexPath:(NSIndexPath *)indexPath {
+    return YES;
+}
+
+//更改item样式(比如颜色等)的最后机会
+- (void)collectionView:(UICollectionView *)collectionView willDisplayCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath {
+    
+}
+//更改header或者footer样式的最后机会
+- (void)collectionView:(UICollectionView *)collectionView willDisplaySupplementaryView:(UICollectionReusableView *)view forElementKind:(NSString *)elementKind atIndexPath:(NSIndexPath *)indexPath {
+    
+}
+
+//长按显示粘贴，复制和剪切，实现下边的三个方法
+- (BOOL)collectionView:(UICollectionView *)collectionView shouldShowMenuForItemAtIndexPath:(NSIndexPath *)indexPath {
+    return YES;
+}
+
+- (BOOL)collectionView:(UICollectionView *)collectionView canPerformAction:(SEL)action forItemAtIndexPath:(NSIndexPath *)indexPath withSender:(id)sender {
+    if ([NSStringFromSelector(action) isEqualToString:@"copy:"] || [NSStringFromSelector(action) isEqualToString:@"paste:"] || [NSStringFromSelector(action) isEqualToString:@"cut"]) {
+        return YES;
+    }else {
+        return NO;
+    }
+}
+
+- (void)collectionView:(UICollectionView *)collectionView performAction:(SEL)action forItemAtIndexPath:(NSIndexPath *)indexPath withSender:(id)sender {
+    if (action == @selector(copy:)){
+        UICollectionViewCell *cell = (UICollectionViewCell *)[self.collectionView cellForItemAtIndexPath:indexPath];
+        [[UIPasteboard generalPasteboard] setString:@"123"];    //剪贴板存储
+    }else if (action == @selector(paste:)) {
+        NSString *string = [UIPasteboard generalPasteboard].string;
+        NSLog(@"paste的字符%@", string);
+    }
+}
+
+- (void)btnClick {
+    NSArray *arr = [self.collectionView indexPathsForSelectedItems];//获取选中的item的indexPatch
+}</string>
+	<key>IDECodeSnippetIdentifier</key>
+	<string>EDF0FAC0-21E0-4EA5-8905-84BAC05204A0</string>
+	<key>IDECodeSnippetLanguage</key>
+	<string>Xcode.SourceCodeLanguage.Objective-C</string>
+	<key>IDECodeSnippetSummary</key>
+	<string>create collectionView</string>
+	<key>IDECodeSnippetTitle</key>
+	<string>colloctionView</string>
+	<key>IDECodeSnippetUserSnippet</key>
+	<true/>
+	<key>IDECodeSnippetVersion</key>
+	<integer>2</integer>
+</dict>
+</plist>
