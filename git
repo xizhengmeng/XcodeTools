@@ -1006,9 +1006,6 @@ else:
 
    elif (command == 'push' or command == 'pull') and len(argv1) == 0:
 
-      if os.path.exists('./git/oldhooks') == False:
-         checkHookIfNeedUpdate()
-
       branchs = os.popen('/usr/bin/git branch').readlines()
       currentBranch = ''
       for item in branchs:
@@ -1032,10 +1029,6 @@ else:
          os.system('/usr/bin/git merge FETCH_HEAD')
       else:
          commandString = ' '.join(sys.argv)
-
-         if 'push' in commandString:
-            if os.path.exists('./git/oldhooks') == False:
-               checkHookIfNeedUpdate()
 
          if commandString[:3] == 'git':
             commandString = commandString.replace('git ','/usr/bin/git ')
