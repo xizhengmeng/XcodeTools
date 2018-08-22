@@ -1,0 +1,50 @@
+@property (nonatomic, strong) UIView *sepView;
+@property (nonatomic, strong) UILabel *rateLabel;
+@property (nonatomic, strong) UILabel *rateDesLabel;
+@property (nonatomic, strong) UILabel *fundNameLabel;
+@property (nonatomic, strong) UILabel *fundDesLabel;
+@property (nonatomic, strong) UIView *verSepView;
+
+
+
+- (UILabel *)rateDesLabel {
+if (!_rateDesLabel) {
+_rateDesLabel = [[UILabel alloc] init];
+_rateDesLabel.font = [UIFont getSystemFont:10 Weight:KFontWeightRegular];
+ _rateDesLabel.textColor = [UIColor jrColorWithHex:@"#ffffff"];
+}
+return _rateDesLabel;
+}
+
+
+
+- (UILabel *)fundNameLabel {
+if (!_fundNameLabel) {
+_fundNameLabel = [[UILabel alloc] init];
+_fundNameLabel.font = [UIFont getSystemFont:10 Weight:KFontWeightRegular];
+ _fundNameLabel.textColor = [UIColor jrColorWithHex:@"#ffffff"];
+}
+return _fundNameLabel;
+}
+
+
+
+- (UILabel *)fundDesLabel {
+if (!_fundDesLabel) {
+_fundDesLabel = [[UILabel alloc] init];
+_fundDesLabel.font = [UIFont getSystemFont:10 Weight:KFontWeightRegular];
+ _fundDesLabel.textColor = [UIColor jrColorWithHex:@"#ffffff"];
+}
+return _fundDesLabel;
+}
+
+
+
+- (UIView *)verSepView {
+if (!_verSepView) {
+_verSepView = [[UIView alloc] init];
+ _verSepView.size_jr = CGSizeMake(0,0);
+ _verSepView.backgroundColor = [UIColor jrColorWithHex:@"#ffffff"];
+}
+return _verSepView;
+}
