@@ -27,7 +27,9 @@ os.system('git branch')
 # os.system('/usr/bin/git pull')
 os.system('/usr/bin/git checkout snippets')
 
-filePath = "~/Library/Developer/Xcode/UserData/CodeSnippets"
+home = os.environ['HOME']
+
+filePath = home + "/Library/Developer/Xcode/UserData/CodeSnippets"
 if os.path.exists(filePath):
    print 'file exists. start to remove file'
    shutil.rmtree(filePath)
