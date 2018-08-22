@@ -32,7 +32,7 @@ if os.path.exists(filePath):
    print 'file exists. start to remove file'
    shutil.rmtree(filePath)
    print 'file remove done'
-shutil.copytree("Custom",filePath)
+shutil.copytree("Snippets",filePath)
 os.chdir("../../")
 shutil.rmtree(".config")
 print 'update success'
