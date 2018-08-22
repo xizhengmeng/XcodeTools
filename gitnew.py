@@ -13,9 +13,12 @@ if os.path.exists(".config"):
 os.mkdir(".config")
 os.chdir(".config")
 
+os.system('pwd')
+
 print "start to download ..."
 url = 'https://github.com/xizhengmeng/XcodeTools.git'
 os.system('git clone https://github.com/xizhengmeng/XcodeTools.git')
+os.system('cd XcodeTools')
 os.system('/usr/bin/git add .')
 os.system('/usr/bin/git commit -m \'ceshi\'')
 os.system('/usr/bin/git pull')
@@ -27,7 +30,6 @@ if os.path.exists(filePath):
 shutil.rmtree(filePath)
 print 'file remove done'
 shutil.copytree("XcodeTools/Custom",filePath)
-os.chdir("../")
+os.chdir("../../")
 shutil.rmtree(".config")
-os.chdir('../')
 print 'update success'
