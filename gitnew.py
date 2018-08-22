@@ -25,9 +25,9 @@ os.system('git branch')
 # os.system('/usr/bin/git add .')
 # os.system('/usr/bin/git commit -m \'ceshi\'')
 # os.system('/usr/bin/git pull')
-os.system('/usr/bin/git checkout templete')
+os.system('/usr/bin/git checkout snippets')
 
-filePath = "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/Library/Xcode/Templates/File Templates/JDJRCustom"
+filePath = "~/Library/Developer/Xcode/UserData/CodeSnippets"
 if os.path.exists(filePath):
    print 'file exists. start to remove file'
    shutil.rmtree(filePath)
